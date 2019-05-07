@@ -22,6 +22,16 @@ from scipy.stats.mstats import gmean
 url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
 
 def load_data(database_filepath):
+    '''
+    Load data from database located at database_filepath to dataframe
+    Input:
+        database_filepath: File path of sql database
+    Output:
+        X: Message data (features)
+        Y: Categories (target)
+        category_names: Labels for 36 categories
+    
+    '''
     engine = create_engine('sqlite:///data/DisasterResponse.db')
     df = pd.read_sql('SELECT * FROM FigureEight', con = engine)
     X = df['message']
@@ -31,6 +41,13 @@ def load_data(database_filepath):
 
 
 def tokenize(text):
+    '''
+    Tokenize and clean text
+    Input:
+        text: original message text
+    Output:
+        lemmed: Tokenized, cleaned, and lemmatized text
+    '''
     detected_urls = re.findall(url_regex, text)
     for url in detected_urls:
         text = text.replace(url, "urlplaceholder")
@@ -65,6 +82,15 @@ def build_model():
     return cv
 
 def multioutput_fscore(y_true,y_pred,beta=1):
+    '''
+    Generate multi-output fscore values
+    Input: 
+        y_true: True lables for test data
+        y_pred: Predicted lables for test data
+        beta: beta value is passed as one
+    Output:
+        f1score: F1 score value
+    '''
     score_list = []
     if isinstance(y_pred, pd.DataFrame) == True:
         y_pred = y_pred.values
@@ -79,6 +105,16 @@ def multioutput_fscore(y_true,y_pred,beta=1):
     return  f1score
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    '''
+    Evaluate performance of the model using test data set
+    Input: 
+        model: Model to be evaluated
+        X_test: Test data features
+        Y_test: True lables for test data
+        category_names: Labels for 36 categories
+    Output:
+        Print accuracy and classfication report for each category
+    '''
     Y_pred = model.predict(X_test)
     
     # Calculate the accuracy for each of them.
@@ -93,6 +129,14 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 def save_model(model, model_filepath):
     # save the model to disk
+	'''
+    Save model as a pickle file 
+    Input: 
+        model: Model to be saved
+        model_filepath: path of the output pick file
+    Output:
+        A pickle file of saved model
+    '''
     pickle.dump(model, open(model_filepath, 'wb'))
 
 

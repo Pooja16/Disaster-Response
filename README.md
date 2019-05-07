@@ -1,4 +1,4 @@
-# Disaster Response 
+﻿# Disaster Response 
 
 ## Introduction:
 In this project I analyzed disaster data from Figure Eight in order to build a model for an API that classifies disaster messages.
@@ -31,6 +31,9 @@ This python notebook contains the ETL pipeline.
 
 5. `ML Pipeline Preparation`:
 This python notebook contains the ML pipeline.
+
+6. `Visualization pdf`:
+This is a screenshot of the visualizations using data from SQLite database.
   
 
 ## Summary of Results of Analysis:	

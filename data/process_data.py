@@ -5,6 +5,13 @@ import numpy as np
 import sqlite3
 
 def load_data(messages_filepath, categories_filepath):
+    '''
+    Input:
+        messages_filepath: File path of messages data
+        categories_filepath: File path of categories data
+    Output:
+        df: Merged dataset from messages and categories
+    '''
     # load messages dataset
     messages = pd.read_csv(messages_filepath)
     # load categories dataset
@@ -14,6 +21,12 @@ def load_data(messages_filepath, categories_filepath):
     return df
 
 def clean_data(df):
+	'''
+    Input:
+        df: Merged dataset from messages and categories
+    Output:
+        df: Cleaned dataset
+    '''
     # create a dataframe of the 36 individual category columns
     categories = df.categories.str.split(pat=';', expand=True)
     # select the first row of the categories dataframe
@@ -38,6 +51,14 @@ def clean_data(df):
     return df
 
 def save_data(df, database_filename):
+	'''
+    Save df into sqlite db
+    Input:
+        df: cleaned dataset
+        database_filename: database name, e.g. DisasterMessages.db
+    Output: 
+        A SQLite database
+    '''
     engine = create_engine('sqlite:///' + database_filename)
     conn = sqlite3.connect(database_filename)
     # get a cursor
